@@ -137,7 +137,7 @@ fun HomeScreen() {
                 Spacer(modifier = Modifier.height(16.dp))
 
                 FeatureButton(
-                    R.drawable.ic_hrs,
+                    R.drawable.ic_toast,
                     R.string.toast_module,
                     R.string.toast_module_full,
                     state.isToastModuleRunning
