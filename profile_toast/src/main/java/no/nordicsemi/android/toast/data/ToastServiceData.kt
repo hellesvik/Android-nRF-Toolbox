@@ -33,7 +33,7 @@ package no.nordicsemi.android.toast.data
 
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectionStatus
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
-import no.nordicsemi.android.kotlin.ble.profile.toast.data.ToastData
+import no.nordicsemi.android.toast.data.ToastData
 
 internal data class ToastServiceData(
     val data: List<ToastData> = emptyList(),

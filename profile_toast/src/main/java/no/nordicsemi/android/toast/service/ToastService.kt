@@ -48,8 +48,6 @@ import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
 import no.nordicsemi.android.kotlin.ble.profile.battery.BatteryLevelParser
-import no.nordicsemi.android.kotlin.ble.profile.toast.BodySensorLocationParser
-import no.nordicsemi.android.kotlin.ble.profile.toast.ToastDataParser
 import no.nordicsemi.android.service.DEVICE_DATA
 import no.nordicsemi.android.service.NotificationService
 import java.util.*
@@ -114,16 +112,7 @@ internal class ToastService : NotificationService() {
     private suspend fun configureGatt(services: ClientBleGattServices) {
         val toastService = services.findService(Toast_SERVICE_UUID)!!
         val toastMeasurementCharacteristic = toastService.findCharacteristic(HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID)!!
-        val bodySensorLocationCharacteristic = toastService.findCharacteristic(BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID)!!
 
-        val bodySensorLocation = bodySensorLocationCharacteristic.read()
-        BodySensorLocationParser.parse(bodySensorLocation)?.let { repository.onBodySensorLocationChanged(it) }
-
-        toastMeasurementCharacteristic.getNotifications()
-            .mapNotNull { ToastDataParser.parse(it) }
-            .onEach { repository.onToastDataChanged(it) }
-            .catch { it.printStackTrace() }
-            .launchIn(lifecycleScope)
 
         // Battery service is optional
         services.findService(BATTERY_SERVICE_UUID)

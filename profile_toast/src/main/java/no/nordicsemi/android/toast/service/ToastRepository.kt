@@ -44,7 +44,7 @@ import no.nordicsemi.android.toast.data.ToastServiceData
 import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
-import no.nordicsemi.android.kotlin.ble.profile.toast.data.ToastData
+import no.nordicsemi.android.toast.data.ToastData
 import no.nordicsemi.android.service.DisconnectAndStopEvent
 import no.nordicsemi.android.service.ServiceManager
 import no.nordicsemi.android.ui.view.StringConst
