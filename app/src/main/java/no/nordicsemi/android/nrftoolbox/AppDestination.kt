@@ -38,6 +38,7 @@ import no.nordicsemi.android.common.navigation.defineDestination
 import no.nordicsemi.android.csc.view.CSCScreen
 import no.nordicsemi.android.gls.main.view.GLSScreen
 import no.nordicsemi.android.hrs.view.HRSScreen
+import no.nordicsemi.android.toast.view.ToastScreen
 import no.nordicsemi.android.hts.view.HTSScreen
 import no.nordicsemi.android.nrftoolbox.view.HomeScreen
 import no.nordicsemi.android.prx.view.PRXScreen
@@ -54,6 +55,7 @@ val HomeDestinations = listOf(
 
 val CSCDestinationId = createSimpleDestination("csc-destination")
 val HRSDestinationId = createSimpleDestination("hrs-destination")
+val ToastDestinationId = createSimpleDestination("toast-destination")
 val HTSDestinationId = createSimpleDestination("hts-destination")
 val GLSDestinationId = createSimpleDestination("gls-destination")
 val BPSDestinationId = createSimpleDestination("bps-destination")
@@ -65,6 +67,7 @@ val UARTDestinationId = createSimpleDestination("uart-destination")
 val ProfileDestinations = listOf(
     defineDestination(CSCDestinationId) { CSCScreen() },
     defineDestination(HRSDestinationId) { HRSScreen() },
+    defineDestination(ToastDestinationId) { ToastScreen() },
     defineDestination(HTSDestinationId) { HTSScreen() },
     defineDestination(GLSDestinationId) { GLSScreen() },
     defineDestination(BPSDestinationId) { BPSScreen() },

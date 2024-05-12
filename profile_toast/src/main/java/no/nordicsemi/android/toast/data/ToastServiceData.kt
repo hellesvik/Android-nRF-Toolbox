@@ -29,27 +29,27 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.nordicsemi.android.analytics
+package no.nordicsemi.android.toast.data
 
-enum class Profile(val displayName: String) {
-    BPS("BPS"),
-    CGMS("CGMS"),
-    CSC("CSC"),
-    GLS("GLS"),
-    HRS("HRS"),
-    Toast("Toast"),
-    HTS("HTS"),
-    PRX("PRX"),
-    RSCS("RSCS"),
-    UART("UART");
-}
+import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectionStatus
+import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
+import no.nordicsemi.android.kotlin.ble.profile.toast.data.ToastData
 
-enum class Link(val displayName: String) {
-    DFU("DFU"),
-    LOGGER("LOGGER");
-}
+internal data class ToastServiceData(
+    val data: List<ToastData> = emptyList(),
+    val bodySensorLocation: Int? = null,
+    val batteryLevel: Int? = null,
+    val connectionState: GattConnectionStateWithStatus? = null,
+    val zoomIn: Boolean = false,
+    val deviceName: String? = null,
+    val missingServices: Boolean = false
+) {
 
-enum class UARTMode(val displayName: String) {
-    MACRO("MACRO"),
-    TEXT("TEXT")
+    val disconnectStatus = if (missingServices) {
+        BleGattConnectionStatus.NOT_SUPPORTED
+    } else {
+        connectionState?.status ?: BleGattConnectionStatus.UNKNOWN
+    }
+
+    val heartRates = data.map { it.heartRate }
 }

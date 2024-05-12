@@ -48,6 +48,7 @@ import no.nordicsemi.android.common.navigation.DestinationId
 import no.nordicsemi.android.common.navigation.Navigator
 import no.nordicsemi.android.csc.repository.CSCRepository
 import no.nordicsemi.android.hrs.service.HRSRepository
+import no.nordicsemi.android.toast.service.ToastRepository
 import no.nordicsemi.android.hts.repository.HTSRepository
 import no.nordicsemi.android.nrftoolbox.repository.ActivitySignals
 import no.nordicsemi.android.nrftoolbox.view.HomeViewState
@@ -65,6 +66,7 @@ class HomeViewModel @Inject constructor(
     cgmRepository: CGMRepository,
     cscRepository: CSCRepository,
     hrsRepository: HRSRepository,
+    toastRepository: ToastRepository,
     htsRepository: HTSRepository,
     prxRepository: PRXRepository,
     rscsRepository: RSCSRepository,
@@ -82,6 +84,10 @@ class HomeViewModel @Inject constructor(
 
         cscRepository.isRunning.onEach {
             _state.value = _state.value.copy(isCSCModuleRunning = it)
+        }.launchIn(viewModelScope)
+
+        toastRepository.isRunning.onEach {
+            _state.value = _state.value.copy(isToastModuleRunning = it)
         }.launchIn(viewModelScope)
 
         hrsRepository.isRunning.onEach {

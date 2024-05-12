@@ -57,6 +57,7 @@ import no.nordicsemi.android.nrftoolbox.CGMSDestinationId
 import no.nordicsemi.android.nrftoolbox.CSCDestinationId
 import no.nordicsemi.android.nrftoolbox.GLSDestinationId
 import no.nordicsemi.android.nrftoolbox.HRSDestinationId
+import no.nordicsemi.android.nrftoolbox.ToastDestinationId
 import no.nordicsemi.android.nrftoolbox.HTSDestinationId
 import no.nordicsemi.android.nrftoolbox.PRXDestinationId
 import no.nordicsemi.android.nrftoolbox.R
@@ -131,6 +132,18 @@ fun HomeScreen() {
                 ) {
                     viewModel.openProfile(CSCDestinationId)
                     viewModel.logEvent(ProfileOpenEvent(Profile.CSC))
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                FeatureButton(
+                    R.drawable.ic_toast,
+                    R.string.toast_module,
+                    R.string.toast_module_full,
+                    state.isToastModuleRunning
+                ) {
+                    viewModel.openProfile(ToastDestinationId)
+                    viewModel.logEvent(ProfileOpenEvent(Profile.Toast))
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))

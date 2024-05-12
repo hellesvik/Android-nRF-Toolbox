@@ -28,56 +28,39 @@
  * NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE,
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-plugins {
-    alias(libs.plugins.nordic.application.compose)
-    alias(libs.plugins.nordic.hilt)
-}
 
-if (getGradle().getStartParameter().getTaskRequests().toString().contains("Release")) {
-    apply(plugin = "com.google.gms.google-services")
-    apply(plugin = "com.google.firebase.crashlytics")
+plugins {
+    alias(libs.plugins.nordic.feature)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
-    namespace = "no.nordicsemi.android.nrftoolbox"
+    namespace = "no.nordicsemi.android.toast"
 }
 
 dependencies {
-    //Hilt requires to implement every module in the main app module
-    //https://github.com/google/dagger/issues/2123
-    implementation(project(":profile_bps"))
-    implementation(project(":profile_csc"))
-    implementation(project(":profile_cgms"))
-    implementation(project(":profile_gls"))
-    implementation(project(":profile_hrs"))
-    implementation(project(":profile_toast"))
-    implementation(project(":profile_hts"))
-    implementation(project(":profile_prx"))
-    implementation(project(":profile_rscs"))
-
-    implementation(project(":profile_uart"))
-
     implementation(project(":lib_analytics"))
-    implementation(project(":lib_ui"))
-    implementation(project(":lib_utils"))
     implementation(project(":lib_service"))
     implementation(project(":lib_scanner"))
+    implementation(project(":lib_ui"))
+    implementation(project(":lib_utils"))
 
     implementation(libs.nordic.core)
     implementation(libs.nordic.theme)
     implementation(libs.nordic.navigation)
-    implementation(libs.nordic.blek.uiscanner)
     implementation(libs.nordic.uilogger)
-    implementation(libs.nordic.permissions.ble)
-    implementation(libs.nordic.analytics)
-    
-    implementation(libs.nordic.blek.client)
 
-    implementation(libs.androidx.core.ktx)
+    implementation(libs.nordic.blek.client)
+    implementation(libs.nordic.blek.profile)
+    implementation(libs.nordic.blek.uiscanner)
+
+    implementation(libs.chart)
+
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.material.iconsExtended)
+    implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.lifecycle.runtime.compose)
+    implementation(libs.androidx.lifecycle.service)
 
     implementation(libs.androidx.hilt.navigation.compose)
 }

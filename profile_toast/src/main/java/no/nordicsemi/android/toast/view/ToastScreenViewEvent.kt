@@ -29,27 +29,14 @@
  * EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-package no.nordicsemi.android.analytics
+package no.nordicsemi.android.toast.view
 
-enum class Profile(val displayName: String) {
-    BPS("BPS"),
-    CGMS("CGMS"),
-    CSC("CSC"),
-    GLS("GLS"),
-    HRS("HRS"),
-    Toast("Toast"),
-    HTS("HTS"),
-    PRX("PRX"),
-    RSCS("RSCS"),
-    UART("UART");
-}
+internal sealed class ToastScreenViewEvent
 
-enum class Link(val displayName: String) {
-    DFU("DFU"),
-    LOGGER("LOGGER");
-}
+internal object SwitchZoomEvent : ToastScreenViewEvent()
 
-enum class UARTMode(val displayName: String) {
-    MACRO("MACRO"),
-    TEXT("TEXT")
-}
+internal object DisconnectEvent : ToastScreenViewEvent()
+
+internal object NavigateUpEvent : ToastScreenViewEvent()
+
+internal object OpenLoggerEvent : ToastScreenViewEvent()
