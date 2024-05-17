@@ -53,12 +53,16 @@ import no.nordicsemi.android.service.NotificationService
 import java.util.*
 import javax.inject.Inject
 
-val Toast_SERVICE_UUID: UUID = UUID.fromString("0000180D-0000-1000-8000-00805f9b34fb")
-private val BODY_SENSOR_LOCATION_CHARACTERISTIC_UUID = UUID.fromString("00002A38-0000-1000-8000-00805f9b34fb")
+val Toast_SERVICE_UUID: UUID = UUID.fromString("00001523-1212-8eee-1523-70a5770a5700")
 private val HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("00002A37-0000-1000-8000-00805f9b34fb")
+private val TOAST_TEMPERATURE_CHARACTERISTIC_UUID = UUID.fromString("00001525-1212-8eee-1523-70a5770a5700")
+
+private val TOAST_POWER_CHARACTERISTIC_UUID = UUID.fromString("00001524-1212-8eee-1523-70a5770a5700")
 
 private val BATTERY_SERVICE_UUID = UUID.fromString("0000180F-0000-1000-8000-00805f9b34fb")
 private val BATTERY_LEVEL_CHARACTERISTIC_UUID = UUID.fromString("00002A19-0000-1000-8000-00805f9b34fb")
+
+private val TOAST_HOLD_TIME_CHARACTERISTIC_UUID = UUID.fromString("00001526-1212-8eee-1523-70a5770a5700")
 
 @SuppressLint("MissingPermission")
 @AndroidEntryPoint
@@ -111,7 +115,7 @@ internal class ToastService : NotificationService() {
 
     private suspend fun configureGatt(services: ClientBleGattServices) {
         val toastService = services.findService(Toast_SERVICE_UUID)!!
-        val toastMeasurementCharacteristic = toastService.findCharacteristic(HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID)!!
+        val toastMeasurementCharacteristic = toastService.findCharacteristic(TOAST_TEMPERATURE_CHARACTERISTIC_UUID)!!
 
 
         // Battery service is optional
