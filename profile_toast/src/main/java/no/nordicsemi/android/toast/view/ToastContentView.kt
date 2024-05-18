@@ -31,8 +31,11 @@
 
 package no.nordicsemi.android.toast.view
 
+import android.graphics.Color
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Button
 import androidx.compose.material3.Icon
@@ -45,11 +48,15 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.github.mikephil.charting.charts.LineChart
+import com.github.mikephil.charting.components.LimitLine
 import no.nordicsemi.android.toast.R
 import no.nordicsemi.android.toast.data.ToastServiceData
 import no.nordicsemi.android.ui.view.BatteryLevelView
 import no.nordicsemi.android.ui.view.ScreenSection
 import no.nordicsemi.android.ui.view.SectionTitle
+import no.nordicsemi.android.toast.utils.addLimitLine
+
 
 @Composable
 internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenViewEvent) -> Unit) {
@@ -59,7 +66,7 @@ internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenView
 
         ScreenSection {
             SectionTitle(
-                resId = R.drawable.ic_chart_line,
+                resId = R.drawable.     ic_chart_line,
                 title = stringResource(id = R.string.toast_section_data),
                 menu = { Menu(state.zoomIn, onEvent) }
             )
@@ -69,7 +76,27 @@ internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenView
             LineChartView(state, state.zoomIn)
         }
 
-        Spacer(modifier = Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp)) // Add a spacer for some space between buttons
+
+        Row {
+            // New Button
+            Button(
+                onClick = { onEvent(DisconnectEvent) } // Replace NewButtonClickEvent with your event
+            ) {
+                Text(text = "Start")
+            }
+
+
+
+            Spacer(modifier = Modifier.width(16.dp)) // Add a spacer for some space between buttons
+
+            Button(
+                onClick = {   }
+            ) {
+                Text(text = stringResource(id = R.string.disconnect))
+
+            }
+        }
 
         state.batteryLevel?.let {
             BatteryLevelView(it)
@@ -77,11 +104,6 @@ internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenView
             Spacer(modifier = Modifier.height(16.dp))
         }
 
-        Button(
-            onClick = { onEvent(DisconnectEvent) }
-        ) {
-            Text(text = stringResource(id = R.string.disconnect))
-        }
     }
 }
 
@@ -98,6 +120,8 @@ private fun Menu(zoomIn: Boolean, onEvent: (ToastScreenViewEvent) -> Unit) {
         )
     }
 }
+
+
 
 @Preview
 @Composable

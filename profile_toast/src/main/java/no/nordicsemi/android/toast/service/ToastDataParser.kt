@@ -42,7 +42,7 @@ object ToastDataParser {
         if (bytes.size < 2) {
             return null
         }
-        
+
         // Read flags
         var offset = 0
         val flags: Int = bytes.getIntValue(IntFormat.FORMAT_UINT8, offset) ?: return null

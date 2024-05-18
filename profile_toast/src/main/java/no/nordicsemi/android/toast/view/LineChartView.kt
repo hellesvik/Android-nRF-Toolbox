@@ -48,11 +48,14 @@ import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import no.nordicsemi.android.toast.data.ToastServiceData
+import com.github.mikephil.charting.components.LimitLine
+import no.nordicsemi.android.toast.utils.addLimitLine
 
-private const val X_AXIS_ELEMENTS_COUNT = 40f
+
+private const val X_AXIS_ELEMENTS_COUNT = 1000f
 
 private const val AXIS_MIN = 0
-private const val AXIS_MAX = 300
+private const val AXIS_MAX = 220
 
 @Composable
 internal fun LineChartView(state: ToastServiceData, zoomIn: Boolean,) {
@@ -61,11 +64,14 @@ internal fun LineChartView(state: ToastServiceData, zoomIn: Boolean,) {
     AndroidView(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp),
+            .height(220.dp),
         factory = { createLineChartView(isSystemInDarkTheme, it, items, zoomIn) },
-        update = { updateData(items, it, zoomIn) }
+        update = {
+            updateData(items, it, zoomIn)
+        }
     )
 }
+
 
 internal fun createLineChartView(
     isDarkTheme: Boolean,
@@ -113,6 +119,7 @@ internal fun createLineChartView(
 
             axisMaximum = points.getMax(zoomIn)
             axisMinimum = points.getMin(zoomIn)
+
         }
         axisRight.isEnabled = false
 
@@ -172,6 +179,7 @@ internal fun createLineChartView(
             // set data
             setData(data)
         }
+        //addLimitLine(this, 150f, "")
     }
 }
 
@@ -211,3 +219,4 @@ private fun List<Int>.getMax(zoomIn: Boolean): Float {
         AXIS_MAX
     }.toFloat()
 }
+
