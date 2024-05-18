@@ -51,5 +51,5 @@ internal data class ToastServiceData(
         connectionState?.status ?: BleGattConnectionStatus.UNKNOWN
     }
 
-    val heartRates = data.map { it.heartRate }
+    val temperatures = data.map { it.temperature }
 }

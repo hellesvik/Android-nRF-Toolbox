@@ -48,13 +48,13 @@ import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
 import no.nordicsemi.android.kotlin.ble.profile.battery.BatteryLevelParser
+import no.nordicsemi.android.toast.service.obj.ToastDataParser
 import no.nordicsemi.android.service.DEVICE_DATA
 import no.nordicsemi.android.service.NotificationService
 import java.util.*
 import javax.inject.Inject
 
 val Toast_SERVICE_UUID: UUID = UUID.fromString("00001523-1212-8eee-1523-70a5770a5700")
-private val HEART_RATE_MEASUREMENT_CHARACTERISTIC_UUID = UUID.fromString("00002A37-0000-1000-8000-00805f9b34fb")
 private val TOAST_TEMPERATURE_CHARACTERISTIC_UUID = UUID.fromString("00001525-1212-8eee-1523-70a5770a5700")
 
 private val TOAST_POWER_CHARACTERISTIC_UUID = UUID.fromString("00001524-1212-8eee-1523-70a5770a5700")
@@ -117,6 +117,12 @@ internal class ToastService : NotificationService() {
         val toastService = services.findService(Toast_SERVICE_UUID)!!
         val toastMeasurementCharacteristic = toastService.findCharacteristic(TOAST_TEMPERATURE_CHARACTERISTIC_UUID)!!
 
+
+        toastMeasurementCharacteristic.getNotifications()
+            .mapNotNull { ToastDataParser.parse(it) }
+            .onEach { repository.onToastDataChanged(it) }
+            .catch { it.printStackTrace() }
+            .launchIn(lifecycleScope)
 
         // Battery service is optional
         services.findService(BATTERY_SERVICE_UUID)

@@ -1,7 +1,7 @@
-        package no.nordicsemi.android.toast.data
+package no.nordicsemi.android.toast.data
 
 data class ToastData(
-    val heartRate: Int,
+    val temperature: Int,
     val sensorContact: Boolean,
     val energyExpanded: Int?,
     val rrIntervals: List<Int>

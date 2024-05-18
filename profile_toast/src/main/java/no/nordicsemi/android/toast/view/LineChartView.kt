@@ -56,7 +56,7 @@ private const val AXIS_MAX = 300
 
 @Composable
 internal fun LineChartView(state: ToastServiceData, zoomIn: Boolean,) {
-    val items = state.heartRates.takeLast(X_AXIS_ELEMENTS_COUNT.toInt()).reversed()
+    val items = state.temperatures.takeLast(X_AXIS_ELEMENTS_COUNT.toInt()).reversed()
     val isSystemInDarkTheme = isSystemInDarkTheme()
     AndroidView(
         modifier = Modifier
