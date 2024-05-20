@@ -33,11 +33,11 @@ package no.nordicsemi.android.toast.service.obj
 
 import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.common.core.IntFormat
-import no.nordicsemi.android.toast.data.ToastData
+import no.nordicsemi.android.toast.data.TemperatureData
 
-object ToastDataParser {
+object TemperatureDataParser {
 
-    fun parse(bytes: DataByteArray): ToastData? {
+    fun parse(bytes: DataByteArray): TemperatureData? {
 
         if (bytes.size < 2) {
             return null
@@ -89,7 +89,8 @@ object ToastDataParser {
         } else {
             emptyList()
         }
+        val targetTemp = 140
 
-        return ToastData(heartRate, sensorContact, energyExpanded, rrIntervals)
+        return TemperatureData(heartRate, sensorContact, energyExpanded, rrIntervals)
     }
 }

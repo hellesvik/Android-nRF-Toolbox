@@ -48,9 +48,10 @@ import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
 import no.nordicsemi.android.kotlin.ble.profile.battery.BatteryLevelParser
-import no.nordicsemi.android.toast.service.obj.ToastDataParser
+import no.nordicsemi.android.toast.service.obj.TemperatureDataParser
 import no.nordicsemi.android.service.DEVICE_DATA
 import no.nordicsemi.android.service.NotificationService
+import no.nordicsemi.android.toast.service.obj.TargetTempDataParser
 import java.util.*
 import javax.inject.Inject
 
@@ -62,7 +63,7 @@ private val TOAST_POWER_CHARACTERISTIC_UUID = UUID.fromString("00001524-1212-8ee
 private val BATTERY_SERVICE_UUID = UUID.fromString("0000180F-0000-1000-8000-00805f9b34fb")
 private val BATTERY_LEVEL_CHARACTERISTIC_UUID = UUID.fromString("00002A19-0000-1000-8000-00805f9b34fb")
 
-private val TOAST_HOLD_TIME_CHARACTERISTIC_UUID = UUID.fromString("00001526-1212-8eee-1523-70a5770a5700")
+private val TOAST_TARGET_TEMP_CHARACTERISTIC_UUID = UUID.fromString("00001527-1212-8eee-1523-70a5770a5700")
 
 @SuppressLint("MissingPermission")
 @AndroidEntryPoint
@@ -116,11 +117,17 @@ internal class ToastService : NotificationService() {
     private suspend fun configureGatt(services: ClientBleGattServices) {
         val toastService = services.findService(Toast_SERVICE_UUID)!!
         val toastMeasurementCharacteristic = toastService.findCharacteristic(TOAST_TEMPERATURE_CHARACTERISTIC_UUID)!!
-
+        val toastTargetTempCharacteristic = toastService.findCharacteristic(TOAST_TARGET_TEMP_CHARACTERISTIC_UUID)!!
 
         toastMeasurementCharacteristic.getNotifications()
-            .mapNotNull { ToastDataParser.parse(it) }
-            .onEach { repository.onToastDataChanged(it) }
+            .mapNotNull { TemperatureDataParser.parse(it) }
+            .onEach { repository.onTemperatureDataChanged(it) }
+            .catch { it.printStackTrace() }
+            .launchIn(lifecycleScope)
+
+        toastTargetTempCharacteristic.getNotifications()
+            .mapNotNull { TargetTempDataParser.parse(it) }
+            .onEach { repository.onTargetTempDataChanged(it) }
             .catch { it.printStackTrace() }
             .launchIn(lifecycleScope)
 

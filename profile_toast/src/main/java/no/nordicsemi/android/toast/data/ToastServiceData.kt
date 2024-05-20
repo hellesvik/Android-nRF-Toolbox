@@ -33,16 +33,16 @@ package no.nordicsemi.android.toast.data
 
 import no.nordicsemi.android.kotlin.ble.core.data.BleGattConnectionStatus
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
-import no.nordicsemi.android.toast.data.ToastData
 
 internal data class ToastServiceData(
-    val data: List<ToastData> = emptyList(),
+    val data: List<TemperatureData> = emptyList(),
     val bodySensorLocation: Int? = null,
     val batteryLevel: Int? = null,
+    val targetTemp: Int? = null,
     val connectionState: GattConnectionStateWithStatus? = null,
     val zoomIn: Boolean = false,
     val deviceName: String? = null,
-    val missingServices: Boolean = false
+    val missingServices: Boolean = false,
 ) {
 
     val disconnectStatus = if (missingServices) {

@@ -31,7 +31,6 @@
 
 package no.nordicsemi.android.toast.view
 
-import android.graphics.Color
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -48,14 +47,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.github.mikephil.charting.charts.LineChart
-import com.github.mikephil.charting.components.LimitLine
 import no.nordicsemi.android.toast.R
 import no.nordicsemi.android.toast.data.ToastServiceData
 import no.nordicsemi.android.ui.view.BatteryLevelView
 import no.nordicsemi.android.ui.view.ScreenSection
 import no.nordicsemi.android.ui.view.SectionTitle
-import no.nordicsemi.android.toast.utils.addLimitLine
 
 
 @Composable

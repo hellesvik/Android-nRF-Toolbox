@@ -44,9 +44,10 @@ import no.nordicsemi.android.toast.data.ToastServiceData
 import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
-import no.nordicsemi.android.toast.data.ToastData
+import no.nordicsemi.android.toast.data.TemperatureData
 import no.nordicsemi.android.service.DisconnectAndStopEvent
 import no.nordicsemi.android.service.ServiceManager
+import no.nordicsemi.android.toast.data.TargetTempData
 import no.nordicsemi.android.ui.view.StringConst
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -99,9 +100,14 @@ class ToastRepository @Inject constructor(
         _data.value = _data.value.copy(connectionState = connectionState)
     }
 
-    fun onToastDataChanged(data: ToastData) {
+    fun onTemperatureDataChanged(data: TemperatureData) {
         _data.value = _data.value.copy(data = _data.value.data + data)
     }
+
+    fun onTargetTempDataChanged(data: TargetTempData) {
+        _data.value = _data.value.copy(targetTemp =  data.targetTemp)
+    }
+
 
     fun onBodySensorLocationChanged(bodySensorLocation: Int) {
         _data.value = _data.value.copy(bodySensorLocation = bodySensorLocation)

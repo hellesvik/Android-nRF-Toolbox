@@ -49,7 +49,6 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import no.nordicsemi.android.toast.data.ToastServiceData
 import com.github.mikephil.charting.components.LimitLine
-import no.nordicsemi.android.toast.utils.addLimitLine
 
 
 private const val X_AXIS_ELEMENTS_COUNT = 1000f
@@ -61,13 +60,17 @@ private const val AXIS_MAX = 220
 internal fun LineChartView(state: ToastServiceData, zoomIn: Boolean,) {
     val items = state.temperatures.takeLast(X_AXIS_ELEMENTS_COUNT.toInt()).reversed()
     val isSystemInDarkTheme = isSystemInDarkTheme()
+    var limit = 0f
+
+
     AndroidView(
         modifier = Modifier
             .fillMaxWidth()
-            .height(220.dp),
+            .height(AXIS_MAX.dp),
         factory = { createLineChartView(isSystemInDarkTheme, it, items, zoomIn) },
         update = {
             updateData(items, it, zoomIn)
+            updateLimit(it, limit, "Target")
         }
     )
 }
@@ -202,6 +205,16 @@ private fun updateData(points: List<Int>, chart: LineChart, zoomIn: Boolean) {
             invalidate()
         }
     }
+}
+
+fun updateLimit(chart: LineChart, value: Float, label: String) {
+    chart.axisLeft.removeAllLimitLines()
+    val limitLine = LimitLine(value, label).apply {
+        lineWidth = 2f
+        lineColor = Color.RED
+        enableDashedLine(10f, 10f, 0f)
+    }
+    chart.axisLeft.addLimitLine(limitLine)
 }
 
 private fun List<Int>.getMin(zoomIn: Boolean): Float {
