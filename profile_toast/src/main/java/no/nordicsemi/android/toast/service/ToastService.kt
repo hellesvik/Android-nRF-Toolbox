@@ -42,12 +42,16 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.mapNotNull
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import no.nordicsemi.android.common.core.DataByteArray
 import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
+import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 import no.nordicsemi.android.kotlin.ble.core.ServerDevice
+import no.nordicsemi.android.kotlin.ble.core.data.BleWriteType
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
 import no.nordicsemi.android.kotlin.ble.profile.battery.BatteryLevelParser
+import no.nordicsemi.android.kotlin.ble.profile.gls.RecordAccessControlPointInputParser
 import no.nordicsemi.android.toast.service.obj.TemperatureDataParser
 import no.nordicsemi.android.service.DEVICE_DATA
 import no.nordicsemi.android.service.NotificationService
@@ -73,6 +77,9 @@ internal class ToastService : NotificationService() {
     lateinit var repository: ToastRepository
 
     private var client: ClientBleGatt? = null
+
+    private lateinit var powerCharacteristic: ClientBleGattCharacteristic
+
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
@@ -118,6 +125,7 @@ internal class ToastService : NotificationService() {
         val toastService = services.findService(Toast_SERVICE_UUID)!!
         val toastMeasurementCharacteristic = toastService.findCharacteristic(TOAST_TEMPERATURE_CHARACTERISTIC_UUID)!!
         val toastTargetTempCharacteristic = toastService.findCharacteristic(TOAST_TARGET_TEMP_CHARACTERISTIC_UUID)!!
+        powerCharacteristic = toastService.findCharacteristic(TOAST_POWER_CHARACTERISTIC_UUID)!!
 
         toastMeasurementCharacteristic.getNotifications()
             .mapNotNull { TemperatureDataParser.parse(it) }
@@ -139,6 +147,11 @@ internal class ToastService : NotificationService() {
             ?.onEach { repository.onBatteryLevelChanged(it) }
             ?.catch { it.printStackTrace() }
             ?.launchIn(lifecycleScope)
+    }
+
+    private suspend fun sendPower(){
+        val dataByteArray = DataByteArray(byteArrayOf(1.toByte()))
+        powerCharacteristic.    write(dataByteArray,BleWriteType.NO_RESPONSE)
     }
 
     private fun stopIfDisconnected(connectionState: GattConnectionStateWithStatus) {

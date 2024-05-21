@@ -51,7 +51,7 @@ object TargetTempDataParser {
         } else {
             IntFormat.FORMAT_UINT16_LE
         }
-        
+
         val rrIntervalsPresent = flags and 0x10 != 0
         offset += 1
 
