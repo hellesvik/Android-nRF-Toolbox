@@ -60,7 +60,7 @@ private const val AXIS_MAX = 220
 internal fun LineChartView(state: ToastServiceData, zoomIn: Boolean,) {
     val items = state.temperatures.takeLast(X_AXIS_ELEMENTS_COUNT.toInt()).reversed()
     val isSystemInDarkTheme = isSystemInDarkTheme()
-    var limit = 0f
+    var limit = state.targetTemp?.toFloat()?: 0f
 
 
     AndroidView(

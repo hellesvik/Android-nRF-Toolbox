@@ -46,37 +46,18 @@ object TargetTempDataParser {
         // Read flags
         var offset = 0
         val flags: Int = bytes.getIntValue(IntFormat.FORMAT_UINT8, offset) ?: return null
-        val hearRateType: IntFormat = if (flags and 0x01 == 0) {
+        val valueFormat: IntFormat = if (flags and 0x01 == 0) {
             IntFormat.FORMAT_UINT8
         } else {
             IntFormat.FORMAT_UINT16_LE
         }
-        val sensorContactStatus = flags and 0x06 shr 1
-        val sensorContactSupported = sensorContactStatus == 2 || sensorContactStatus == 3
-        val sensorContactDetected = sensorContactStatus == 3
-        val energyExpandedPresent = flags and 0x08 != 0
+        
         val rrIntervalsPresent = flags and 0x10 != 0
         offset += 1
 
 
-        // Validate packet length
-        if (bytes.size < (1 + (hearRateType.value and 0x0F) + (if (energyExpandedPresent) 2 else 0) + if (rrIntervalsPresent) 2 else 0)) {
-            return null
-        }
+        val targetTemp: Int = bytes.getIntValue(valueFormat, 0) ?: return null
 
-        // Prepare data
-
-        // Prepare data
-        val sensorContact = if (sensorContactSupported) sensorContactDetected else false
-
-        val heartRate: Int = bytes.getIntValue(hearRateType, offset) ?: return null
-        offset += hearRateType.value and 0xF
-
-        var energyExpanded: Int? = null
-        if (energyExpandedPresent) {
-            energyExpanded = bytes.getIntValue(IntFormat.FORMAT_UINT16_LE, offset)
-            offset += 2
-        }
 
         val rrIntervals = if (rrIntervalsPresent) {
             val count: Int = (bytes.size - offset) / 2
@@ -89,6 +70,7 @@ object TargetTempDataParser {
         } else {
             emptyList()
         }
-        return TargetTempData(heartRate, sensorContact, energyExpanded, rrIntervals)
+        //val targetTemp = 100
+        return TargetTempData(targetTemp, rrIntervals)
     }
 }
