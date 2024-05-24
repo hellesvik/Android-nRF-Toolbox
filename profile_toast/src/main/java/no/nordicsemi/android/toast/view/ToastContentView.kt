@@ -77,14 +77,20 @@ internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenView
         Row {
             // New Button
             Button(
-                onClick = { onEvent(PowerEvent) }
+                onClick = { onEvent(PowerOnEvent) }
             ) {
                 Text(text = "Start")
             }
 
+            Spacer(modifier = Modifier.width(16.dp))
 
+            Button(
+                onClick = { onEvent(PowerOffEvent) }
+            ) {
+                Text(text = "Stop")
+            }
 
-            Spacer(modifier = Modifier.width(16.dp)) // Add a spacer for some space between buttons
+            Spacer(modifier = Modifier.width(16.dp))
 
             Button(
                 onClick = { onEvent(DisconnectEvent)  }

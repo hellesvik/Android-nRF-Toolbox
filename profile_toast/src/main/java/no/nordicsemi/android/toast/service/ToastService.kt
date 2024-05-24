@@ -47,6 +47,7 @@ import no.nordicsemi.android.kotlin.ble.client.main.callback.ClientBleGatt
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattCharacteristic
 import no.nordicsemi.android.kotlin.ble.client.main.service.ClientBleGattServices
 import no.nordicsemi.android.kotlin.ble.core.ServerDevice
+import no.nordicsemi.android.kotlin.ble.core.data.BleGattProperty
 import no.nordicsemi.android.kotlin.ble.core.data.BleWriteType
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
@@ -92,10 +93,6 @@ internal class ToastService : NotificationService() {
 
         repository.stopEvent
             .onEach { disconnect() }
-            .launchIn(lifecycleScope)
-
-        repository.powerEvent
-            .onEach { sendPower() }
             .launchIn(lifecycleScope)
 
         return START_REDELIVER_INTENT
@@ -151,12 +148,22 @@ internal class ToastService : NotificationService() {
             ?.onEach { repository.onBatteryLevelChanged(it) }
             ?.catch { it.printStackTrace() }
             ?.launchIn(lifecycleScope)
+
+        repository.powerEvent
+            .onEach { powerCharacteristic.splitWrite(DataByteArray.from(it), getWriteType(powerCharacteristic)) }
+            .onEach { repository.log(10, "Sent: $it") }
+            .catch { it.printStackTrace() }
+            .launchIn(lifecycleScope)
     }
 
-    private suspend fun sendPower(){
-        val dataByteArray = DataByteArray(byteArrayOf(1.toByte()))
-        powerCharacteristic.    write(dataByteArray,BleWriteType.NO_RESPONSE)
+        private fun getWriteType(characteristic: ClientBleGattCharacteristic): BleWriteType {
+        return if (characteristic.properties.contains(BleGattProperty.PROPERTY_WRITE)) {
+            BleWriteType.DEFAULT
+        } else {
+            BleWriteType.NO_RESPONSE
+        }
     }
+
 
     private fun stopIfDisconnected(connectionState: GattConnectionStateWithStatus) {
         if (connectionState.state == GattConnectionState.STATE_DISCONNECTED) {
