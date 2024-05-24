@@ -46,6 +46,7 @@ import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionStateWithStatus
 import no.nordicsemi.android.toast.data.TemperatureData
 import no.nordicsemi.android.service.DisconnectAndStopEvent
+import no.nordicsemi.android.toast.service.PowerEvent
 import no.nordicsemi.android.service.ServiceManager
 import no.nordicsemi.android.toast.data.TargetTempData
 import no.nordicsemi.android.ui.view.StringConst
@@ -66,6 +67,9 @@ class ToastRepository @Inject constructor(
 
     private val _stopEvent = simpleSharedFlow<DisconnectAndStopEvent>()
     internal val stopEvent = _stopEvent.asSharedFlow()
+
+    private val _powerEvent = simpleSharedFlow<PowerEvent>()
+    internal val powerEvent = _powerEvent.asSharedFlow()
 
     val isRunning = data.map { it.connectionState?.state == GattConnectionState.STATE_CONNECTED }
 
@@ -109,10 +113,6 @@ class ToastRepository @Inject constructor(
     }
 
 
-    fun onBodySensorLocationChanged(bodySensorLocation: Int) {
-        _data.value = _data.value.copy(bodySensorLocation = bodySensorLocation)
-    }
-
     fun onBatteryLevelChanged(batteryLevel: Int) {
         _data.value = _data.value.copy(batteryLevel = batteryLevel)
     }
@@ -121,7 +121,9 @@ class ToastRepository @Inject constructor(
         _data.value = _data.value.copy(missingServices = true)
         _stopEvent.tryEmit(DisconnectAndStopEvent())
     }
-
+    fun doPowerEvent() {
+        _powerEvent.tryEmit(PowerEvent())
+    }
     fun openLogger() {
         logger?.launch()
     }

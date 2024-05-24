@@ -37,6 +37,8 @@ internal object SwitchZoomEvent : ToastScreenViewEvent()
 
 internal object DisconnectEvent : ToastScreenViewEvent()
 
+internal object PowerEvent : ToastScreenViewEvent()
+
 internal object NavigateUpEvent : ToastScreenViewEvent()
 
 internal object OpenLoggerEvent : ToastScreenViewEvent()

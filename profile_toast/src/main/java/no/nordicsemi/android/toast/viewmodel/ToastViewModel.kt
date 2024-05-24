@@ -51,6 +51,7 @@ import no.nordicsemi.android.toast.view.ToastScreenViewEvent
 import no.nordicsemi.android.toast.view.NavigateUpEvent
 import no.nordicsemi.android.toast.view.OpenLoggerEvent
 import no.nordicsemi.android.toast.view.SwitchZoomEvent
+import no.nordicsemi.android.toast.view.PowerEvent
 import no.nordicsemi.android.kotlin.ble.core.ServerDevice
 import no.nordicsemi.android.kotlin.ble.core.data.GattConnectionState
 import no.nordicsemi.android.toolbox.scanner.ScannerDestinationId
@@ -106,6 +107,8 @@ internal class ToastViewModel @Inject constructor(
             NavigateUpEvent -> navigationManager.navigateUp()
             OpenLoggerEvent -> repository.openLogger()
             SwitchZoomEvent -> onZoomButtonClicked()
+            PowerEvent -> repository.doPowerEvent()
+
         }
     }
 

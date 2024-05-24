@@ -94,6 +94,10 @@ internal class ToastService : NotificationService() {
             .onEach { disconnect() }
             .launchIn(lifecycleScope)
 
+        repository.powerEvent
+            .onEach { sendPower() }
+            .launchIn(lifecycleScope)
+
         return START_REDELIVER_INTENT
     }
 

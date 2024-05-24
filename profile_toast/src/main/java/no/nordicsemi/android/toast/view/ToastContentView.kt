@@ -77,7 +77,7 @@ internal fun ToastContentView(state: ToastServiceData, onEvent: (ToastScreenView
         Row {
             // New Button
             Button(
-                onClick = {  }
+                onClick = { onEvent(PowerEvent) }
             ) {
                 Text(text = "Start")
             }
