@@ -49,6 +49,8 @@ import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet
 import no.nordicsemi.android.toast.data.ToastServiceData
 import com.github.mikephil.charting.components.LimitLine
+import com.github.mikephil.charting.components.Legend
+import com.github.mikephil.charting.components.LegendEntry
 
 
 private const val X_AXIS_ELEMENTS_COUNT = 1000f
@@ -146,14 +148,15 @@ internal fun createLineChartView(
             // draw dashed line
             set1.enableDashedLine(10f, 5f, 0f)
 
-            // black lines and points
+            // black lines
             if (isDarkTheme) {
                 set1.color = Color.WHITE
-                set1.setCircleColor(Color.WHITE)
             } else {
                 set1.color = Color.BLACK
-                set1.setCircleColor(Color.BLACK)
             }
+
+            set1.setCircleColor(Color.RED)
+
 
             // line thickness and point size
             set1.lineWidth = 1f
@@ -190,6 +193,7 @@ private fun updateData(points: List<Int>, chart: LineChart, zoomIn: Boolean) {
     val entries = points.mapIndexed { i, v ->
         Entry(-i.toFloat(), v.toFloat())
     }.reversed()
+    val currentTemp = points.firstOrNull() ?: 0
 
     with(chart) {
         axisLeft.apply {
@@ -204,6 +208,20 @@ private fun updateData(points: List<Int>, chart: LineChart, zoomIn: Boolean) {
             notifyDataSetChanged()
             invalidate()
         }
+        legend.apply {
+            isEnabled = true
+            form = Legend.LegendForm.LINE
+            textSize = 14f
+            textColor = Color.RED
+            xEntrySpace = 15f
+            yEntrySpace = 10f
+            setCustom(listOf(
+                LegendEntry().apply {
+                    formColor = Color.RED
+                    label = "Current Temp: $currentTemp"
+                }
+            ))
+        }
     }
 }
 
@@ -211,7 +229,10 @@ fun updateLimit(chart: LineChart, value: Float, label: String) {
     chart.axisLeft.removeAllLimitLines()
     val limitLine = LimitLine(value, label).apply {
         lineWidth = 2f
-        lineColor = Color.RED
+        lineColor = Color.BLUE
+        textColor = Color.BLUE
+        textSize = 12f
+        labelPosition = LimitLine.LimitLabelPosition.LEFT_TOP
         enableDashedLine(10f, 10f, 0f)
     }
     chart.axisLeft.addLimitLine(limitLine)
